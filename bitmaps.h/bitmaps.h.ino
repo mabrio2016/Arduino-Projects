@@ -1,4 +1,83 @@
-Use Arduino Nano Board
+
+//Use Board NodeMCU (esp12-module)
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1331.h>
+#include <SPI.h>
+
+
+//Node-MCU ESP8266 GPIO pins and Pin lables
+#define sclk 14 // D5
+#define mosi 13 // D7
+#define cs   15 // D8
+#define rst  16 // D0
+#define dc   2  // D4
+
+
+// Color definitions
+#define BLACK           0x0000
+#define BLUE            0x001F
+#define RED             0xF800
+#define GREEN           0x07E0
+#define CYAN            0x07FF
+#define MAGENTA         0xF81F
+#define YELLOW          0xFFE0  
+#define WHITE           0xFFFF
+
+const unsigned char AppleBitmap [] PROGMEM = {
+  // 'icons8-apple-logo-60, 30x30px
+  0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x70, 0x00, 0x00, 0x00, 0xf0, 0x00, 0x00, 0x01, 0xf0, 0x00, 
+  0x00, 0x01, 0xe0, 0x00, 0x00, 0x01, 0xc0, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xf8, 0x7e, 0x00, 
+  0x03, 0xff, 0xff, 0x00, 0x07, 0xff, 0xff, 0x80, 0x07, 0xff, 0xff, 0x00, 0x0f, 0xff, 0xfe, 0x00, 
+  0x0f, 0xff, 0xfe, 0x00, 0x0f, 0xff, 0xfc, 0x00, 0x0f, 0xff, 0xfc, 0x00, 0x0f, 0xff, 0xfc, 0x00, 
+  0x0f, 0xff, 0xfe, 0x00, 0x0f, 0xff, 0xfe, 0x00, 0x0f, 0xff, 0xff, 0x00, 0x0f, 0xff, 0xff, 0x80, 
+  0x07, 0xff, 0xff, 0xc0, 0x07, 0xff, 0xff, 0x80, 0x03, 0xff, 0xff, 0x80, 0x03, 0xff, 0xff, 0x00, 
+  0x01, 0xff, 0xff, 0x00, 0x00, 0xff, 0xfe, 0x00, 0x00, 0xff, 0xfc, 0x00, 0x00, 0x30, 0x18, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+
+int x = 0;
+
+// Option 1: use any pins but a little slower
+//Adafruit_SSD1331 display = Adafruit_SSD1331(cs, dc, mosi, sclk, rst);  
+
+// Option 2: must use the hardware SPI pins 
+// (for UNO thats sclk = 13 and sid = 11) and pin 10 must be 
+// an output. This is much faster - also required if you want
+// to use the microSD card (see the image drawing example)
+Adafruit_SSD1331 display = Adafruit_SSD1331(cs, dc, rst);
+
+float p = 3.1415926;
+
+void setup(void) {
+  Serial.begin(9600);
+  Serial.print("hello!");
+  display.begin();
+
+  Serial.println("init");
+  uint16_t time = millis();
+  display.fillScreen(BLACK);
+  time = millis() - time;
+  
+  Serial.println(time, DEC);
+  delay(500);
+
+  display.fillScreen(BLACK);
+  display.setCursor(0, 5);
+  display.setTextColor(RED);  
+  display.setTextSize(1.5);
+  display.println("Breno Bandeira");
+  delay(2000);
+}
+  
+void loop() { 
+
+  display.drawBitmap(10, 30, AppleBitmap, 30, 30, WHITE);
+  delay(2000);
+  display.drawBitmap(10, 30, AppleBitmap, 30, 30, BLACK);
+  delay(2000);        
+}Use Arduino Nano Board
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1331.h>
@@ -47,51 +126,7 @@ void setup(void) {
   Serial.println(time, DEC);
   delay(500);
  
-   
-  //lcdTestPattern();
-  //delay(1000);
   
-//  display.fillScreen(BLACK);
-//  display.setCursor(0,0);
-//  display.print("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing ante sed nibh tincidunt feugiat. Maecenas enim massa");
-//  delay(1000);
-//
-//  // tft print function!
-//  tftPrintTest();
-//  delay(2000);
-//  
-//  //a single pixel
-//  display.drawPixel(display.width()/2, display.height()/2, GREEN);
-//  delay(500);
-//  
-//  // line draw test
-//  testlines(YELLOW);
-//  delay(500);    
-//  
-//  // optimized lines
-//  testfastlines(RED, BLUE);
-//  delay(500);    
-// 
-//  testdrawrects(GREEN);
-//  delay(1000);
-//
-//  testfillrects(YELLOW, MAGENTA);
-//  delay(1000);
-//
-//  display.fillScreen(BLACK);
-//  testfillcircles(10, BLUE);
-//  testdrawcircles(10, WHITE);
-//  delay(1000);
-//
-//  testroundrects();
-//  delay(500);
-//  
-//  testtriangles();
-//  delay(500);
-//  
-//  Serial.println("done");
-//  delay(1000);
-}
 
 void loop() { 
 
